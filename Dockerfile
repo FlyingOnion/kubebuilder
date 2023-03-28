@@ -1,5 +1,7 @@
 FROM golang:1.20
 
+ARG KUBEBUILDER_VERSION v3.9.1
+
 RUN sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
 
 RUN git clone --depth 1 --branch ${KUBEBUILDER_VERSION} https://github.com/kubernetes-sigs/kubebuilder

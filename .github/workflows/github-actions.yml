@@ -8,8 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
-    env:
-      KUBEBUILDER_VERSION: ${{ vars.KUBEBUILDER_VERSION }}
     steps:
     - uses: actions/checkout@v3
     - name: Docker meta
