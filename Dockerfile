@@ -1,6 +1,6 @@
 FROM golang:1.20
 
-ARG KUBEBUILDER_VERSION v3.9.1
+ARG KUBEBUILDER_VERSION=v3.9.1
 
 RUN sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
 
