@@ -3,7 +3,7 @@ FROM golang:1.20-rc-alpine
 ARG KUBEBUILDER_VERSION=v3.9.1
 
 RUN go env -w GOPROXY="https://goproxy.cn,direct"
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 
 RUN git clone --depth 1 --branch ${KUBEBUILDER_VERSION} https://github.com/kubernetes-sigs/kubebuilder
 WORKDIR ${GOPATH}/kubebuilder
