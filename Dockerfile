@@ -1,19 +1,24 @@
-FROM golang:1.20
+FROM golang:1.20-rc-alpine
 
 ARG KUBEBUILDER_VERSION=v3.9.1
 
-RUN sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
+RUN go env -w GOPROXY="https://goproxy.cn,direct"
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
 
 RUN git clone --depth 1 --branch ${KUBEBUILDER_VERSION} https://github.com/kubernetes-sigs/kubebuilder
-# COPY . /go/src/kubebuilder/
 WORKDIR ${GOPATH}/kubebuilder
 
-RUN git checkout -b ${KUBEBUILDER_VERSION}
-RUN go env -w GOPROXY="https://goproxy.cn,direct"
+RUN git checkout -b ${KUBEBUILDER_VERSION} || git checkout ${KUBEBUILDER_VERSION}
 RUN sed -i 's#https://proxy.golang.org/#https://goproxy.cn,direct#g' Makefile
 RUN make build && make install
 
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+WORKDIR ${GOPATH}
+RUN rm -rf ${GOPATH}/kubebuilder
 
-ENTRYPOINT [ "entrypoint.sh" ]
+COPY entrypoint.sh /docker-entrypoint.sh
+RUN chmod 755 /docker-entrypoint.sh
+
+VOLUME [ "${GOPATH}" ]
+
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
 CMD [ "kubebuilder" ]
