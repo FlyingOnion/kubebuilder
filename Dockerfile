@@ -3,7 +3,7 @@ FROM golang:1.20-rc
 ARG version
 
 RUN go env -w GOPROXY="https://goproxy.cn,direct" && \
-    go env -w GOSUMDB="https://sum.golang.google.cn" && \
+    go env -w GOSUMDB="sum.golang.google.cn" && \
     sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
 
 RUN git clone --depth 1 --branch ${version} https://github.com/kubernetes-sigs/kubebuilder ${GOPATH}/src/kubebuilder
