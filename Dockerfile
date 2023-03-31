@@ -13,8 +13,8 @@ RUN git checkout -b ${version} || git checkout ${version}
 RUN sed -i 's#https://proxy.golang.org/#https://goproxy.cn,direct#g' Makefile
 RUN make install
 
-WORKDIR ${GOPATH}/src/kubebuilder-crd
-VOLUME [ "${GOPATH}/src/kubebuilder-crd" ]
+WORKDIR /mnt/kubebuilder
+VOLUME [ "/mnt/kubebuilder" ]
 
 # clean source code
 RUN rm -rf ${GOPATH}/src/kubebuilder
