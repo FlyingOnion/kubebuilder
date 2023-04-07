@@ -13,15 +13,14 @@ RUN git checkout -b ${version} || git checkout ${version}
 RUN sed -i 's#https://proxy.golang.org/#https://goproxy.cn,direct#g' Makefile
 RUN make install
 
-WORKDIR /mnt/kubebuilder
-VOLUME [ "/mnt/kubebuilder" ]
+WORKDIR ${GOPATH}
+VOLUME [ "${GOPATH}" ]
 
 # clean source code
 RUN rm -rf ${GOPATH}/src/kubebuilder
 
 # add bash completion
 RUN kubebuilder completion bash > /etc/bash_completion.d/kubebuilder.bash
-RUN chmod 755 /etc/bash_completion.d/kubebuilder.bash
 
 COPY entrypoint.sh /docker-entrypoint.sh
 RUN chmod 755 /docker-entrypoint.sh
